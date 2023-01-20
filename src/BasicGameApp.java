@@ -69,6 +69,14 @@ public class BasicGameApp implements Runnable {
 	public BufferStrategy bufferStrategy;
 	public Image astroPic;
 	public Image emojiPic;
+	public Image fish3Pic;
+	public Image fish4Pic;
+	public Image minifish1Pic;
+	public Image minifish2Pic;
+	public Image minifish3Pic;
+
+
+
 	public Image background;
 
    //Declare the objects used in the program
@@ -76,6 +84,13 @@ public class BasicGameApp implements Runnable {
 	private Astronaut astro;
 	private Astronaut Jack;
 	private Astronaut emoji;
+	private Astronaut fish1;
+	private Astronaut fish2;
+	private Astronaut fish3;
+	private Astronaut fish4;
+	private Astronaut minifish1;
+	private Astronaut minifish2;
+	private Astronaut minifish3;
 
    // Main method definition
    // This is the code that runs first and automatically
@@ -95,15 +110,26 @@ public class BasicGameApp implements Runnable {
        
       //variable and objects
       //create (construct) the objects needed for the game and load up 
-		astroPic = Toolkit.getDefaultToolkit().getImage("astronaut.png");
-		emojiPic = Toolkit.getDefaultToolkit().getImage("emojipic.png");//load the picture
+		astroPic = Toolkit.getDefaultToolkit().getImage("fish 1.png");
+		emojiPic = Toolkit.getDefaultToolkit().getImage("fish 2.png");//load the picture
+		fish3Pic = Toolkit.getDefaultToolkit().getImage("fish 3.png");
+		fish4Pic = Toolkit.getDefaultToolkit().getImage("fish 4.png");
+		minifish1Pic = Toolkit.getDefaultToolkit().getImage("mini fish 1.png");
+		minifish2Pic = Toolkit.getDefaultToolkit().getImage("mini fish 2.png");
+		minifish3Pic = Toolkit.getDefaultToolkit().getImage("mini fish 3.png");
 		astro = new Astronaut(10,100);
 		Jack = new Astronaut(100,200);
+		fish3 = new Astronaut(10,300);
+		fish4 =  new Astronaut(10,300);
+		minifish1 =  new Astronaut(10,300);
+		minifish2 =  new Astronaut(10,300);
+		minifish3 =  new Astronaut(10,300);
+
 		Jack.dx=1;
 		Jack.dy=8;
 		emoji = new Astronaut(200,100);
 		//emoji = new Astronaut(50,200);
-	background = Toolkit.getDefaultToolkit().getImage("moon.jpeg"); //load the picture
+	background = Toolkit.getDefaultToolkit().getImage("realocean.jpeg"); //load the picture
 		emoji.dx=2;
 		emoji.dy=8;
 
@@ -137,6 +163,11 @@ public class BasicGameApp implements Runnable {
 		astro.bounce();
 		Jack.bounce();
 		emoji.bounce();
+		fish3.bounce();
+		fish4.bounce();
+		minifish1.bounce();
+		minifish2.bounce();
+		minifish3.bounce();
 		crash();
 	}
 	
@@ -192,6 +223,7 @@ public class BasicGameApp implements Runnable {
 		if(Jack.isAlive == true){
 			g.drawImage(astroPic, Jack.xpos, Jack.ypos, Jack.width, Jack.height, null);
 			g.draw(new Rectangle(Jack.xpos, Jack.ypos, Jack.width, Jack.height));
+
 
 		}
 
