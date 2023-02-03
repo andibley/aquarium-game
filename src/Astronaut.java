@@ -17,7 +17,7 @@ public class Astronaut {
     public boolean isAlive;            //a boolean to denote if the hero is alive or dead.
 
     public Rectangle rec;
-
+    public boolean iscrashing;
 
 
     // METHOD DEFINITION SECTION
