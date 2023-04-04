@@ -13,8 +13,11 @@
 
 //Graphics Libraries
 
+// 1.
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 // FISH 2 AND MINI FISH 1 BOUNCE AFTER THE PICTURE CHANGE. FISH 2 = EMOJIPIC.
 // ONCE THIS BOUNCE HAPPENS PUT GAME OVER SIGN AS BACKGROUND
@@ -22,7 +25,7 @@ import java.awt.image.BufferStrategy;
 //*******************************************************************************
 // Class Definition Section
 
-public class BasicGameApp implements Runnable {
+public class BasicGameApp implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
     //Sets the width and height of the program window
     final int WIDTH = 1000;
@@ -50,8 +53,12 @@ public class BasicGameApp implements Runnable {
     public Image coralPic;
     public Image coral2Pic;
     public Image background;
+    public Image minifish8pic;
+    public Image wrapfishPic;
+
     //Declare the objects used in the program
     //These are things that are made up of more than one variable type
+
     private final Astronaut astro;
     private final Astronaut Jack;
     private final Astronaut emoji;
@@ -62,20 +69,41 @@ public class BasicGameApp implements Runnable {
     private final Astronaut minifish1;
     private final Astronaut minifish2;
     private final Astronaut minifish3;
+    // declare controlled Astro
     private final Astronaut minifish5;
+    private final Astronaut wrapfish;
     private final Astronaut minifish6;
     private final Astronaut minifish7;
     private final Astronaut coral;
     private final Astronaut coral2;
     private boolean gameover;
+
+public ArrayFish[] minifish8;
+
+
+
+
+
+
+
+
     // Constructor Method
     // This has the same name as the class
     // This section is the setup portion of the program
     // Initialize your variables and construct your program objects here.
+
     public BasicGameApp() {
 
         setUpGraphics();
+       canvas.addKeyListener(this);
+        minifish8 = new ArrayFish[20];
 
+        for(int x=0; x<minifish8.length;x++) {
+            minifish8 [x] = new ArrayFish(400,300);
+            minifish8pic = Toolkit.getDefaultToolkit().getImage("arrayfish.jpeg");
+            minifish8[x]= new ArrayFish((int) (Math.random()*300) + 500, (int) (Math.random()*300)+300);
+
+        }
         //variable and objects
         //create (construct) the objects needed for the game and load up
         astroPic = Toolkit.getDefaultToolkit().getImage("fish 1.png");
@@ -90,6 +118,9 @@ public class BasicGameApp implements Runnable {
         minifish7Pic = Toolkit.getDefaultToolkit().getImage("minifish7.jpeg");
         coralPic = Toolkit.getDefaultToolkit().getImage("coral.jpeg");
         coral2Pic = Toolkit.getDefaultToolkit().getImage("coral2.jpeg");
+        minifish8pic = Toolkit.getDefaultToolkit().getImage("arrayfish.jpeg");
+        wrapfishPic = Toolkit.getDefaultToolkit().getImage("wrapfish.jpeg");
+        // = Toolkit.getDefaultToolkit().getImage("arrayfish.jpeg");
         gameover=false;
         astro = new Astronaut(10, 100);
         Jack = new Astronaut(10, 200);
@@ -98,11 +129,15 @@ public class BasicGameApp implements Runnable {
         minifish1 = new Astronaut(30, 200);
         minifish2 = new Astronaut(10, 100);
         minifish3 = new Astronaut(10, 100);
+        // contruct aray to hold astro with x to make different slots
+        // for(intx=o;x<minifish3astro[10];
+
         minifish5 = new Astronaut(600, 100);
         minifish6 = new Astronaut(500, 200);
         minifish7 = new Astronaut(700, 100);
         coral = new Astronaut(1000, 600);
         coral2 = new Astronaut(1050, 600);
+        wrapfish = new Astronaut(500,200);
 
         Jack.dx = 1;
         Jack.dy = 8;
@@ -117,11 +152,16 @@ public class BasicGameApp implements Runnable {
 
     // Main method definition
     // This is the code that runs first and automatically
-    public static void main(String[] args) {
-        BasicGameApp ex = new BasicGameApp();   //creates a new instance of the game
-        new Thread(ex).start();                 //creates a threads & starts up the code in the run( ) method
-    }
 
+
+    public static void main(String[] args) {
+
+
+        BasicGameApp ex = new BasicGameApp();
+        new Thread(ex).start();//creates a new instance of the game
+        //creates a threads & starts up the code in the run( ) method
+
+    }
     public void crash() {
         System.out.println(Jack.xpos + "y:" + Jack.ypos);
         //if(Jack.rec.intersects(astro.rec) && Jack.isAlive == true && astro.isAlive == true)if (Jack.rec.intersects(minifish3.rec) && Jack.isAlive == true && minifish3.isAlive == true) {
@@ -182,6 +222,7 @@ public class BasicGameApp implements Runnable {
             render();  // paint the graphics
             pause(15); // sleep for 10 ms
 
+
         }
     }
 
@@ -194,11 +235,21 @@ public class BasicGameApp implements Runnable {
         fish3.bounce();
         fish4.bounce();
         minifish1.bounce();
+        wrapfish.wrap();
         minifish2.bounce();
         minifish3.bounce();
         minifish5.bounce();
         minifish6.bounce();
         minifish7.bounce();
+        wrap();
+
+
+        for(int x=0; x<minifish8.length; x = x+1){
+            minifish8[x].move();
+        }
+
+
+
         crash();
     }
 
@@ -227,7 +278,8 @@ public class BasicGameApp implements Runnable {
         canvas.setIgnoreRepaint(true);
 
         panel.add(canvas);  // adds the canvas to the panel.
-
+canvas.addMouseListener(this);
+canvas.addMouseMotionListener(this);
         // frame operations
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  //makes the frame close and exit nicely
         frame.pack();  //adjusts the frame and its contents so the sizes are at their default or larger
@@ -256,15 +308,15 @@ public class BasicGameApp implements Runnable {
             //draw the image of the astronaut
             g.drawImage(background, 0, 0, WIDTH, HEIGHT, null);
             //	g.drawImage(astroPic, astro.xpos, astro.ypos, astro.width, astro.height, null);
-            {
 
-                {
+
+
                     if (minifish3.isAlive == true && minifish1.isAlive == true) {
                         g.drawImage(astroPic, Jack.xpos, Jack.ypos, Jack.width, Jack.height, null);
                     }
 
-                }
-            }
+
+
 
 
             if (astro.isAlive == true) {
@@ -290,6 +342,12 @@ public class BasicGameApp implements Runnable {
             g.drawImage(minifish7Pic, minifish7.xpos, minifish7.ypos, minifish7.width, minifish7.height, null);
             g.drawImage(coralPic, coral.xpos, coral.ypos, coral.width, coral.height, null);
             g.drawImage(coral2Pic, coral2.xpos, coral2.ypos, coral2.width, coral2.height, null);
+            g.drawImage(wrapfishPic, wrapfish.xpos, wrapfish.ypos, wrapfish.width, wrapfish.height, null);
+
+            for(int x=0; x<minifish8.length;x++) {
+            g.drawImage(minifish8pic,minifish8[x].xpos,minifish8[x].ypos,minifish8[x].width,minifish8[x].height,null);
+
+            }
         }
         //g.draw(new Rectangle(astro.xpos, astro.ypos, astro.height, astro.width));
         g.dispose();
@@ -298,7 +356,90 @@ public class BasicGameApp implements Runnable {
       //   background = Toolkit.getDefaultToolkit().getImage("gameover.png");
 
     }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+int code = e.getKeyCode();
+System.out.println(code);
+if(code == 83){
+    minifish1.dx = 40;
+    if(code == 68)
+        minifish1.dx = 23;
+    if(code == 65)
+        minifish1.dx = 32;
+    if(code == 83)
+        minifish1.dx = 39;
 }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println(e.getX());
+        minifish1.xpos = e.getX();
+      // minifish1.ypos = e.getY();
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+minifish1.width = 200;
+minifish1.height = 100;
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+minifish1.width = 60;
+minifish1.height = 60;
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        System.out.println(e.getX());
+        minifish1.xpos = e.getX();
+    }
+
+
+public void wrap(){
+
+        for(int x=0; x<1001; x++){
+            wrapfish.dx = x;
+            x++;
+            if(wrapfish.dx > HEIGHT){
+                wrapfish.dx = 0;
+            }
+    }
+}
+
+
+
+
+}
+
 
 
 //isalive use for game
