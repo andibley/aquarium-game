@@ -55,6 +55,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener, Mouse
     public Image background;
     public Image minifish8pic;
     public Image wrapfishPic;
+    public Image wrapfish2Pic;
 
     //Declare the objects used in the program
     //These are things that are made up of more than one variable type
@@ -76,6 +77,7 @@ public class BasicGameApp implements Runnable, KeyListener, MouseListener, Mouse
     private final Astronaut minifish7;
     private final Astronaut coral;
     private final Astronaut coral2;
+    private final Astronaut wrapfish2;
     private boolean gameover;
 
 public ArrayFish[] minifish8;
@@ -120,6 +122,7 @@ public ArrayFish[] minifish8;
         coral2Pic = Toolkit.getDefaultToolkit().getImage("coral2.jpeg");
         minifish8pic = Toolkit.getDefaultToolkit().getImage("arrayfish.jpeg");
         wrapfishPic = Toolkit.getDefaultToolkit().getImage("wrapfish.jpeg");
+        wrapfish2Pic = Toolkit.getDefaultToolkit().getImage("download.png");
         // = Toolkit.getDefaultToolkit().getImage("arrayfish.jpeg");
         gameover=false;
         astro = new Astronaut(10, 100);
@@ -136,8 +139,9 @@ public ArrayFish[] minifish8;
         minifish6 = new Astronaut(500, 200);
         minifish7 = new Astronaut(700, 100);
         coral = new Astronaut(1000, 600);
-        coral2 = new Astronaut(1050, 600);
+        coral2 = new Astronaut(900, 400);
         wrapfish = new Astronaut(500,200);
+        wrapfish2 = new Astronaut(300,250);
 
         Jack.dx = 1;
         Jack.dy = 8;
@@ -236,12 +240,13 @@ public ArrayFish[] minifish8;
         fish4.bounce();
         minifish1.bounce();
         wrapfish.wrap();
+        wrapfish2.wrap();
         minifish2.bounce();
         minifish3.bounce();
         minifish5.bounce();
         minifish6.bounce();
         minifish7.bounce();
-        wrap();
+       // wrap();
 
 
         for(int x=0; x<minifish8.length; x = x+1){
@@ -343,6 +348,7 @@ canvas.addMouseMotionListener(this);
             g.drawImage(coralPic, coral.xpos, coral.ypos, coral.width, coral.height, null);
             g.drawImage(coral2Pic, coral2.xpos, coral2.ypos, coral2.width, coral2.height, null);
             g.drawImage(wrapfishPic, wrapfish.xpos, wrapfish.ypos, wrapfish.width, wrapfish.height, null);
+            g.drawImage(wrapfish2Pic, wrapfish2.xpos, wrapfish2.ypos, wrapfish2.width, wrapfish2.height, null);;
 
             for(int x=0; x<minifish8.length;x++) {
             g.drawImage(minifish8pic,minifish8[x].xpos,minifish8[x].ypos,minifish8[x].width,minifish8[x].height,null);
@@ -366,15 +372,16 @@ canvas.addMouseMotionListener(this);
     public void keyPressed(KeyEvent e) {
 int code = e.getKeyCode();
 System.out.println(code);
-if(code == 83){
-    minifish1.dx = 40;
+if(code == 32) { // space bar makes it move down
+    minifish1.dy = 2;
+}
     if(code == 68)
         minifish1.dx = 23;
     if(code == 65)
         minifish1.dx = 32;
     if(code == 83)
         minifish1.dx = 39;
-}
+
     }
 
     @Override
@@ -424,21 +431,21 @@ minifish1.height = 60;
     }
 
 
-public void wrap(){
+//public void wrap(){
 
-        for(int x=0; x<1001; x++){
-            wrapfish.dx = x;
-            x++;
-            if(wrapfish.dx > HEIGHT){
-                wrapfish.dx = 0;
-            }
-    }
+    //    for(int x=0; x<1001; x++){
+     //       wrapfish.dx = x;
+      //      x++;
+      //      if(wrapfish.dx > HEIGHT){
+      //          wrapfish.dx = 0;
+         //   }
+  //  }
 }
 
 
 
 
-}
+
 
 
 
